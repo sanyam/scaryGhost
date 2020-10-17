@@ -6,7 +6,7 @@ screen = pygame.display.set_mode((800, 576))
 pygame.display.set_caption("Игра - Страшный призрак!")
 clock = pygame.time.Clock()
 fps = 60
-# comment Dima
+# comment Dima 2
 # устанавлваем фон черный
 black = [0, 0, 0]
 x = 50
