@@ -1,2 +1,6 @@
-.idea
+.idea/
 venv
+.idea/misc.xml
+.idea/ScaryGhost.iml
+.idea/workspace.xml
+__pycache__/spritesheet.cpython-37.pyc
