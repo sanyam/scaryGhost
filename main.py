@@ -80,7 +80,7 @@ while 1:
     # [1] - влево
     # [2] - вправо
     # [3] - вверх
-    screen.blit(ghost_images[0], (540/2-x, 760/2-y))
+    screen.blit(ghost_images[0], (1360/2 + 720 -x, 700/2 +300 - y))
 
     if x_motion == STOP and y_motion == STOP:
         screen.blit(player_images[0], (x, y))
