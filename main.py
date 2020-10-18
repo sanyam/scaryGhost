@@ -4,20 +4,20 @@ import sys, pygame, spritesheet
 pygame.init()
 
 # устанавливаем размер окна
-screen = pygame.display.set_mode((800, 576))
+screen = pygame.display.set_mode((1360, 700))
 # устанавливаем заголовок окна
-pygame.display.set_caption("Игра - Страшный призрак!")
+pygame.display.set_caption("Игра - Страшный призрак")
 
 # устанавливаем частоту обновления 60 кадров/сек
 clock = pygame.time.Clock()
-fps = 60
+fps = 70
 
 # устанавлваем фон черный
 black = [0, 0, 0]
 
 # устанавливаем начальные координаты игрока
-x = 50
-y = 50
+x = 1260
+y = 600
 
 #40x36
 spriteGroup = pygame.sprite.Group()
@@ -45,17 +45,17 @@ y_motion = STOP
 
 while 1:
     screen.fill(black)
-
+#рисуем стену
     i = 0
-    while i < 20:
+    while i < 34:
         screen.blit(wall, (i * 40, 0))
-        screen.blit(wall, (i * 40, 540))
+        screen.blit(wall, (i * 40, 660))
         i = i + 1
 
     i = 0
-    while i < 14:
+    while i < 18:
         screen.blit(wall, (0, 36 + 36 * i))
-        screen.blit(wall, (760, 36 + 36 * i))
+        screen.blit(wall, (1324, 36 + 36 * i))
         i = i + 1
 
     for event in pygame.event.get():
