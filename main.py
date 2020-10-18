@@ -1,15 +1,21 @@
 import sys, pygame, spritesheet
 
+# Инициализация игрового движка pygame
 pygame.init()
 
+# устанавливаем размер окна
 screen = pygame.display.set_mode((800, 576))
+# устанавливаем заголовок окна
 pygame.display.set_caption("Игра - Страшный призрак!")
+
+# устанавливаем частоту обновления 60 кадров/сек
 clock = pygame.time.Clock()
 fps = 60
-# comment Dima 5
-# COMMENT 5
+
 # устанавлваем фон черный
 black = [0, 0, 0]
+
+# устанавливаем начальные координаты игрока
 x = 50
 y = 50
 
