@@ -1,106 +1,62 @@
-import sys, pygame, spritesheet
+import sys, pygame
+from wall import Wall
+from player import Player
+from ghost import Ghost
 
-# Инициализация игрового движка pygame
+# Инициализация игрового движка PyGame
 pygame.init()
+# устанавливаем частоту обновления 30 кадров/сек
+FPS = 60
+clock = pygame.time.Clock()
 
 # устанавливаем размер окна
 screen = pygame.display.set_mode((1360, 700))
 # устанавливаем заголовок окна
 pygame.display.set_caption("Игра - Страшный призрак")
 
-# устанавливаем частоту обновления 60 кадров/сек
-clock = pygame.time.Clock()
-fps = 70
+# создаем группу спрайтов стен
+walls = pygame.sprite.Group()
+# загружаем данные из файла level0.txt, где описана структура уровня (0 - ничего нет, 1 - стена)
+level_lines = open("level0.txt","r").readlines()
+i = 0
+for line in level_lines:
+    j = 0
+    for ch in line:
+        if ch == "1":
+            walls.add(Wall((j * 40, i * 36)))
+        j = j + 1
+    i = i + 1
+i = 0
 
-# устанавлваем фон черный
-black = [0, 0, 0]
+# создаем игрока
+player = Player((1260, 500));
 
-# устанавливаем начальные координаты игрока
-x = 1260
-y = 600
+#coздаем приведение
+ghost = Ghost((300, 200));
 
-#40x36
-spriteGroup = pygame.sprite.Group()
-
-wall = pygame.image.load("wall-small.jpg")
-
-#ghost = pygame.image.load("ghost.png")
-gss = spritesheet.spritesheet('ghost-sprite.png')
-pss = spritesheet.spritesheet('player.png')
-ghost_images = []
-ghost_images = gss.images_at(((0, 0, 42, 47),(0, 47, 42, 47),(0, 94, 42, 47),(0, 141, 42, 47)), colorkey = (0,0,0))
-player_images = []
-player_images = pss.images_at(((0, 0, 53, 63),(0, 63, 53, 63),(0, 126, 53, 63),(0, 189, 53, 63)), colorkey = (0,0,0))
-
-pygame.display.flip()
-
-RIGHT = "right"
-LEFT = "left"
-UP = "up"
-DOWN = "down"
-STOP = "stop"
-
-x_motion = STOP
-y_motion = STOP
-
-while 1:
-    screen.fill(black)
-#рисуем стену
-    i = 0
-    while i < 34:
-        screen.blit(wall, (i * 40, 0))
-        screen.blit(wall, (i * 40, 660))
-        i = i + 1
-
-    i = 0
-    while i < 18:
-        screen.blit(wall, (0, 36 + 36 * i))
-        screen.blit(wall, (1324, 36 + 36 * i))
-        i = i + 1
-
+# бесконечный цикл игры
+i = 0
+while True:
+    # обрабатывем нажание кнопок и реагируем на них
     for event in pygame.event.get():
+        # нажали выход из игры - прекращаем программу
         if event.type == pygame.QUIT:
             sys.exit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                x_motion = LEFT
-            elif event.key == pygame.K_RIGHT:
-                x_motion = RIGHT
-            elif event.key == pygame.K_UP:
-                y_motion = UP
-            elif event.key == pygame.K_DOWN:
-                y_motion = DOWN
-        elif event.type == pygame.KEYUP:
-            if event.key in [pygame.K_LEFT, pygame.K_RIGHT]:
-                x_motion = STOP
-            if event.key in [pygame.K_UP, pygame.K_DOWN]:
-                y_motion = STOP
-    #ghost_images
-    # [0] - вниз
-    # [1] - влево
-    # [2] - вправо
-    # [3] - вверх
-    screen.blit(ghost_images[0], (1360/2 + 720 -x, 700/2 +300 - y))
 
-    if x_motion == STOP and y_motion == STOP:
-        screen.blit(player_images[0], (x, y))
+    #двигаем игрока
+    player.handle_move(event, walls)
 
-    if x_motion == LEFT:
-        x -= 3
-        screen.blit(player_images[2], (x, y))
+    # заполняем поле черным
+    screen.fill(pygame.Color(0, 0, 0))
+    #рисуем стены
+    for wall in walls:
+        wall.draw(screen)
+    # рисуем игрока
+    player.draw(screen)
+    #рисуем приведение
+    ghost.draw(screen)
 
-    elif x_motion == RIGHT:
-        x += 3
-        screen.blit(player_images[3], (x, y))
-
-    elif y_motion == UP:
-        y -= 3
-        screen.blit(player_images[1], (x, y))
-
-    elif y_motion == DOWN:
-        y += 3
-        screen.blit(player_images[0], (x, y))
-
+    # обновляем экран (все что мы сделали выше применяется на экране)
     pygame.display.update()
-
-    clock.tick(fps)
+    # устанавливаем скорость отрисовки экрана FPS = Frames Per Second
+    clock.tick(FPS)
