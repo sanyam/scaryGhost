@@ -29,10 +29,10 @@ for line in level_lines:
 i = 0
 
 # создаем игрока
-player = Player((1260, 500));
+player = Player((1260, 580));
 
 #coздаем приведение
-ghost = Ghost((300, 200));
+ghost = Ghost((100, 100));
 
 # бесконечный цикл игры
 i = 0
